@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CBSE Portal | Omviraj Soodan</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        cbse: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            800: '#3730a3',
+                            900: '#312e81',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            .print-only {
+                display: block !important;
+            }
+            body {
+                background: white !important;
+                color: black !important;
+            }
+            .card-box {
+                box-shadow: none !important;
+                border: 1px solid #ccc !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen transition-colors duration-200">
+
+    <!-- Navigation Header with Integrated Google & App Search Bar -->
+    <header class="sticky top-0 z-50 bg-white/95 dark:bg-slate-800/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-700 no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+            
+            <!-- Logo & Personalization -->
+            <div class="flex items-center space-x-3 cursor-pointer shrink-0" onclick="resetToHome()">
+                <div class="bg-cbse-600 text-white p-2.5 rounded-xl shadow-md flex items-center justify-center">
+                    <i class="fa-solid fa-graduation-cap text-xl"></i>
+                </div>
+                <div class="hidden sm:block">
+                    <h1 class="text-base font-bold leading-tight bg-gradient-to-r from-cbse-600 to-indigo-500 bg-clip-text text-transparent">Omviraj's Study Hub</h1>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">CBSE Class 10 NCERT Solutions</p>
+                </div>
+            </div>
+
+            <!-- Integrated Search Bar (Search Local NCERT or Direct to Google) -->
+            <div class="flex-1 max-w-md">
+                <form id="globalSearchForm" onsubmit="handleSearch(event)" class="relative flex items-center">
+                    <div class="relative w-full">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400">
+                            <i id="searchIcon" class="fa-solid fa-magnifying-glass text-xs"></i>
+                        </span>
+                        <input type="text" id="globalSearchInput" placeholder="Search chapters or Google..." 
+                            class="w-full pl-9 pr-20 py-2 text-xs sm:text-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-900/80 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-cbse-500 focus:bg-white dark:focus:bg-slate-900 transition">
+                    </div>
+                    <button type="submit" title="Search Google" 
+                        class="absolute right-1 px-2.5 py-1 bg-cbse-600 hover:bg-cbse-700 text-white rounded-lg text-xs font-medium flex items-center space-x-1 transition shadow-sm">
+                        <i class="fa-brands fa-google text-[10px]"></i>
+                        <span class="hidden sm:inline">Search</span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- User Header Badges & Actions -->
+            <div class="flex items-center space-x-2 shrink-0">
+                <button id="themeToggleBtn" onclick="toggleDarkMode()" class="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition" title="Toggle Theme">
+                    <i class="fa-solid fa-moon text-base dark:hidden"></i>
+                    <i class="fa-solid fa-sun text-base hidden dark:inline"></i>
+                </button>
+
+                <div class="flex items-center space-x-2 bg-indigo-50 dark:bg-slate-700 text-cbse-700 dark:text-indigo-300 px-3 py-1.5 rounded-full text-xs font-bold border border-indigo-100 dark:border-slate-600">
+                    <i class="fa-solid fa-user-check text-emerald-500"></i>
+                    <span id="badgeStudentName">Omviraj Soodan</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+
+        <!-- Personalized Greeting Banner -->
+        <div class="mb-8 bg-gradient-to-r from-cbse-600 via-indigo-600 to-purple-600 rounded-2xl p-6 sm:p-8 text-white shadow-lg relative overflow-hidden no-print">
+            <div class="relative z-10 max-w-2xl">
+                <span class="inline-block px-3 py-1 bg-white/20 backdrop-blur-md text-white text-xs font-bold rounded-full mb-3 uppercase tracking-wider">Class 10 CBSE Board Hub</span>
+                <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Welcome back, Omviraj! 👋</h2>
+                <p class="text-indigo-100 text-xs sm:text-sm mt-2 leading-relaxed">
+                    Select any chapter across Mathematics, Science, SST, English, and Hindi to get instant NCERT Solutions, key notes, and practice quizzes.
+                </p>
+            </div>
+            <!-- Decorative Background Graphic -->
+            <div class="absolute -right-8 -bottom-12 opacity-15 pointer-events-none text-9xl">
+                <i class="fa-solid fa-book-bookmark"></i>
+            </div>
+        </div>
+
+        <!-- STEP 1: Selection Form -->
+        <section id="selectionSection" class="transition-all duration-300 max-w-2xl mx-auto">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-700/60 p-6 sm:p-8">
+                
+                <div class="text-center mb-6">
+                    <h3 class="text-xl font-extrabold text-slate-900 dark:text-white">Choose Subject & Chapter</h3>
+                    <p class="text-slate-500 dark:text-slate-400 text-xs sm:text-sm mt-1">Get authentic chapter summaries, NCERT solutions, and practice quizzes.</p>
+                </div>
+
+                <form id="studyForm" onsubmit="handleFormSubmit(event)" class="space-y-5">
+                    <!-- Student Name (Pre-filled for Omviraj) -->
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5" for="studentName">Student Name</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400">
+                                <i class="fa-regular fa-user"></i>
+                            </span>
+                            <input type="text" id="studentName" value="Omviraj Soodan" required
+                                class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-cbse-500 transition font-medium">
+                        </div>
+                    </div>
+
+                    <!-- Class -->
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Class</label>
+                        <input type="text" value="Class 10 (CBSE Board)" readonly
+                            class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800/60 text-slate-500 dark:text-slate-400 text-sm cursor-not-allowed font-medium">
+                    </div>
+
+                    <!-- Subject Selection -->
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5" for="subjectSelect">Subject</label>
+                        <select id="subjectSelect" onchange="onSubjectChange()" required
+                            class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-cbse-500 transition">
+                            <option value="" disabled selected>-- Choose Subject --</option>
+                            <option value="Mathematics">Mathematics</option>
+                            <option value="Science">Science</option>
+                            <option value="Social Science">Social Science (SST)</option>
+                            <option value="English">English</option>
+                            <option value="Hindi">Hindi (हिंदी)</option>
+                        </select>
+                    </div>
+
+                    <!-- Book Selection (Appears dynamically if applicable) -->
+                    <div id="bookContainer" class="hidden">
+                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5" for="bookSelect">Select Book / Section</label>
+                        <select id="bookSelect" onchange="onBookChange()"
+                            class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-cbse-500 transition">
+                            <option value="" disabled selected>-- Choose Book --</option>
+                        </select>
+                    </div>
+
+                    <!-- Chapter Selection -->
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5" for="chapterSelect">Select Chapter</label>
+                        <select id="chapterSelect" disabled required
+                            class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-cbse-500 transition disabled:opacity-50">
+                            <option value="" disabled selected>-- Select Subject First --</option>
+                        </select>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" 
+                        class="w-full py-3.5 px-6 rounded-xl bg-cbse-600 hover:bg-cbse-700 text-white font-semibold text-sm shadow-lg shadow-cbse-500/25 transition duration-150 flex items-center justify-center space-x-2">
+                        <span>View NCERT Solutions</span>
+                        <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- STEP 2: Content & Solutions Display -->
+        <section id="contentSection" class="hidden space-y-6">
+            
+            <!-- Context Header Banner -->
+            <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4 no-print">
+                <div>
+                    <div class="flex flex-wrap items-center gap-2 mb-2">
+                        <span id="displaySubjectTag" class="px-3 py-1 rounded-full text-xs font-bold bg-cbse-100 text-cbse-700 dark:bg-cbse-900/60 dark:text-indigo-300">Subject</span>
+                        <span id="displayBookTag" class="hidden px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300">Book</span>
+                        <span class="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300">CBSE NCERT 2024-26</span>
+                    </div>
+                    <h2 id="displayChapterTitle" class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">Chapter Name</h2>
+                    <p id="displayStudentInfo" class="text-slate-500 dark:text-slate-400 text-sm mt-1">Student: Omviraj Soodan | Class 10</p>
+                </div>
+                
+                <div class="flex items-center space-x-2">
+                    <button onclick="window.print()" class="px-4 py-2 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 text-xs font-semibold rounded-xl transition flex items-center space-x-2">
+                        <i class="fa-solid fa-print"></i>
+                        <span>Print Notes</span>
+                    </button>
+                    <button onclick="resetToHome()" class="px-4 py-2 bg-cbse-50 dark:bg-indigo-950 text-cbse-600 dark:text-indigo-300 hover:bg-cbse-100 dark:hover:bg-indigo-900 text-xs font-semibold rounded-xl transition flex items-center space-x-2">
+                        <i class="fa-solid fa-arrow-left"></i>
+                        <span>Change Chapter</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Printable Title Header (Print Only) -->
+            <div class="hidden print-only mb-6 border-b pb-4">
+                <h1 class="text-2xl font-bold">CBSE Class 10 NCERT Solutions</h1>
+                <p id="printMeta" class="text-sm text-gray-600"></p>
+            </div>
+
+            <!-- Navigation Tabs for Solutions/Summary/Quiz -->
+            <div class="border-b border-slate-200 dark:border-slate-700 no-print">
+                <nav class="flex space-x-6 overflow-x-auto" aria-label="Tabs">
+                    <button id="tabBtnSummary" onclick="switchTab('summary')" class="tab-btn py-3 border-b-2 border-cbse-600 font-semibold text-sm text-cbse-600 dark:text-indigo-400 whitespace-nowrap flex items-center space-x-2">
+                        <i class="fa-solid fa-book-open"></i>
+                        <span>Key Concepts & Notes</span>
+                    </button>
+                    <button id="tabBtnSolutions" onclick="switchTab('solutions')" class="tab-btn py-3 border-b-2 border-transparent font-medium text-sm text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300 whitespace-nowrap flex items-center space-x-2">
+                        <i class="fa-solid fa-list-check"></i>
+                        <span>NCERT Question & Answers</span>
+                    </button>
+                    <button id="tabBtnQuiz" onclick="switchTab('quiz')" class="tab-btn py-3 border-b-2 border-transparent font-medium text-sm text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300 whitespace-nowrap flex items-center space-x-2">
+                        <i class="fa-solid fa-brain"></i>
+                        <span>Self-Assessment Quiz</span>
+                    </button>
+                </nav>
+            </div>
+
+            <!-- TAB 1: Chapter Summary -->
+            <div id="tabContentSummary" class="space-y-6">
+                <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6 sm:p-8 shadow-sm">
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-4 flex items-center space-x-2">
+                        <i class="fa-solid fa-lightbulb text-amber-500"></i>
+                        <span>Key Summary & Board Formulae</span>
+                    </h3>
+                    <div id="summaryBody" class="prose dark:prose-invert max-w-none text-slate-600 dark:text-slate-300 space-y-3 leading-relaxed text-sm sm:text-base">
+                        <!-- Dynamic Summary -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: NCERT Solutions -->
+            <div id="tabContentSolutions" class="hidden space-y-6">
+                <!-- Search Question Filter -->
+                <div class="relative no-print">
+                    <input type="text" id="solutionSearchInput" oninput="filterSolutions()" placeholder="Search questions in this chapter..."
+                        class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-cbse-500">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400"></i>
+                </div>
+
+                <div id="solutionsList" class="space-y-4">
+                    <!-- Dynamic Solutions Rendered Here -->
+                </div>
+            </div>
+
+            <!-- TAB 3: Interactive Quiz -->
+            <div id="tabContentQuiz" class="hidden space-y-6 no-print">
+                <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6 sm:p-8 shadow-sm">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900 dark:text-white">Quick Practice Quiz</h3>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">Test your understanding of this chapter, Omviraj.</p>
+                        </div>
+                        <span id="quizScoreBadge" class="hidden px-3 py-1 bg-emerald-100 text-emerald-800 text-xs font-bold rounded-full">Score: 0</span>
+                    </div>
+
+                    <div id="quizContainer" class="space-y-6">
+                        <!-- Dynamic Quiz Questions -->
+                    </div>
+
+                    <div class="mt-6 pt-4 border-t border-slate-100 dark:border-slate-700 flex justify-end">
+                        <button onclick="checkQuizAnswers()" class="px-6 py-2.5 bg-cbse-600 hover:bg-cbse-700 text-white font-semibold text-sm rounded-xl shadow-md transition">
+                            Submit Answers
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <script>
+        // Full NCERT Class 10 Syllabus Database
+        const ncertDatabase = {
+            "Mathematics": {
+                "books": null,
+                "chapters": [
+                    "Real Numbers",
+                    "Polynomials",
+                    "Pair of Linear Equations in Two Variables",
+                    "Quadratic Equations",
+                    "Arithmetic Progressions",
+                    "Triangles",
+                    "Coordinate Geometry",
+                    "Introduction to Trigonometry",
+                    "Some Applications of Trigonometry",
+                    "Circles",
+                    "Areas Related to Circles",
+                    "Surface Areas and Volumes",
+                    "Statistics",
+                    "Probability"
+                ]
+            },
+            "Science": {
+                "books": null,
+                "chapters": [
+                    "Chemical Reactions and Equations",
+                    "Acids, Bases and Salts",
+                    "Metals and Non-metals",
+                    "Carbon and its Compounds",
+                    "Life Processes",
+                    "Control and Coordination",
+                    "How do Organisms Reproduce?",
+                    "Heredity",
+                    "Light – Reflection and Refraction",
+                    "Human Eye and Colourful World",
+                    "Electricity",
+                    "Magnetic Effects of Electric Current",
+                    "Our Environment"
+                ]
+            },
+            "Social Science": {
+                "books": {
+                    "History (India and the Contemporary World II)": [
+                        "The Rise of Nationalism in Europe",
+                        "Nationalism in India",
+                        "The Making of a Global World",
+                        "The Age of Industrialisation",
+                        "Print Culture and the Modern World"
+                    ],
+                    "Geography (Contemporary India II)": [
+                        "Resources and Development",
+                        "Forest and Wildlife Resources",
+                        "Water Resources",
+                        "Agriculture",
+                        "Minerals and Energy Resources",
+                        "Manufacturing Industries",
+                        "Lifelines of National Economy"
+                    ],
+                    "Political Science (Democratic Politics II)": [
+                        "Power Sharing",
+                        "Federalism",
+                        "Gender, Religion and Caste",
+                        "Political Parties",
+                        "Outcomes of Democracy"
+                    ],
+                    "Economics (Understanding Economic Development)": [
+                        "Development",
+                        "Sectors of the Indian Economy",
+                        "Money and Credit",
+                        "Globalization and the Indian Economy",
+                        "Consumer Rights"
+                    ]
+                }
+            },
+            "English": {
+                "books": {
+                    "First Flight (Main Textbook)": [
+                        "A Letter to God",
+                        "Dust of Snow (Poem)",
+                        "Fire and Ice (Poem)",
+                        "Nelson Mandela: Long Walk to Freedom",
+                        "A Tiger in the Zoo (Poem)",
+                        "Two Stories About Flying",
+                        "How to Tell Wild Animals (Poem)",
+                        "The Ball Poem (Poem)",
+                        "From the Diary of Anne Frank",
+                        "Amanda! (Poem)",
+                        "Glimpses of India",
+                        "Trees (Poem)",
+                        "Fog (Poem)",
+                        "Mijbil the Otter",
+                        "Madam Rides the Bus",
+                        "The Tale of Custard the Dragon (Poem)",
+                        "The Proposal",
+                        "For Anne Gregory (Poem)"
+                    ],
+                    "Footprints Without Feet (Supplementary Reader)": [
+                        "A Triumph of Surgery",
+                        "The Thief's Story",
+                        "The Midnight Visitor",
+                        "A Question of Trust",
+                        "Footprints Without Feet",
+                        "The Making of a Scientist",
+                        "The Necklace",
+                        "Bholi",
+                        "The Book That Saved the Earth"
+                    ]
+                }
+            },
+            "Hindi": {
+                "books": {
+                    "Kshitij Bhag 2 (क्षितिज भाग 2)": [
+                        "पद (सूरदास)",
+                        "राम-लक्ष्मण-परशुराम संवाद (तुलसीदास)",
+                        "आत्मकथ्य (जयशंकर प्रसाद)",
+                        "उत्साह और अट नहीं रही (सूर्यकांत त्रिपाठी 'निराला')",
+                        "यह दंतुरित मुस्कान और फसल (नागार्जुन)",
+                        "संगतकार (मंगलेश डबराल)",
+                        "नेताजी का चश्मा (स्वयं प्रकाश)",
+                        "बालगोबिन भगत (रामवृक्ष बेनीपुरी)",
+                        "लखनवी अंदाज (यशपाल)",
+                        "एक कहानी यह भी (मन्नू भंडारी)",
+                        "नौबतखाने में इबादत (यतींद्र मिश्र)",
+                        "संस्कृति (भदंत आनंद कौसल्यायन)"
+                    ],
+                    "Sparsh Bhag 2 (स्पर्श भाग 2)": [
+                        "साखी (कबीर)",
+                        "पद (मीरा)",
+                        "मनुष्यता (मैथिलीशरण गुप्त)",
+                        "परवत प्रदेश में पावस (सुमित्रानंदन पंत)",
+                        "कर चले हम फिदा (कैफ़ी आज़मी)",
+                        "आत्मत्राण (रबींद्रनाथ टैगोर)",
+                        "बड़े भाई साहब (प्रेमचंद)",
+                        "डायरी का एक पन्ना (सीताराम सेकसरिया)",
+                        "तताँरा-वामीरो कथा (लीलाधर मंडलोई)",
+                        "तीसरी कसम के शिल्पकार शैलेंद्र (प्रहलाद अग्रवाल)",
+                        "अब कहाँ दूसरे के दुख से दुखी होने वाले (निदा फ़ाज़ली)",
+                        "पतझड़ में टूटी पत्तियाँ (रविंद्र केलेकर)",
+                        "कारतूस (हबीब तनवीर)"
+                    ],
+                    "Sanchayan Bhag 2 (संचयन भाग 2)": [
+                        "हरिहर काका (मिथिलेश्वर)",
+                        "सपनों के-से दिन (गुरदयाल सिंह)",
+                        "टोपी शुक्ला (राही मासूम रज़ा)"
+                    ]
+                }
+            }
+        };
+
+        // Global Google Search / Local Chapter Filter Function
+        function handleSearch(e) {
+            e.preventDefault();
+            const query = document.getElementById("globalSearchInput").value.trim();
+            if (!query) return;
+
+            // Check if query matches any chapter in our local DB first
+            let matchedSubject = null;
+            let matchedBook = null;
+            let matchedChapter = null;
+
+            for (const [sub, data] of Object.entries(ncertDatabase)) {
+                if (data.chapters) {
+                    const match = data.chapters.find(ch => ch.toLowerCase().includes(query.toLowerCase()));
+                    if (match) {
+                        matchedSubject = sub;
+                        matchedChapter = match;
+                        break;
+                    }
+                } else if (data.books) {
+                    for (const [bk, chaps] of Object.entries(data.books)) {
+                        const match = chaps.find(ch => ch.toLowerCase().includes(query.toLowerCase()));
+                        if (match) {
+                            matchedSubject = sub;
+                            matchedBook = bk;
+                            matchedChapter = match;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (matchedChapter) {
+                // Open chapter directly in portal
+                openChapterDirectly(matchedSubject, matchedBook, matchedChapter);
+            } else {
+                // Direct Google Search in new tab
+                const googleUrl = `https://www.google.com/search?q=${encodeURIComponent('CBSE Class 10 NCERT Solutions ' + query)}`;
+                window.open(googleUrl, '_blank');
+            }
+        }
+
+        function openChapterDirectly(subject, book, chapter) {
+            const studentName = document.getElementById("studentName").value || "Omviraj Soodan";
+            
+            document.getElementById("studentBadge").classList.remove("hidden");
+            document.getElementById("badgeStudentName").textContent = studentName;
+
+            document.getElementById("displayChapterTitle").textContent = chapter;
+            document.getElementById("displaySubjectTag").textContent = subject;
+            if (book) {
+                document.getElementById("displayBookTag").textContent = book;
+                document.getElementById("displayBookTag").classList.remove("hidden");
+            } else {
+                document.getElementById("displayBookTag").classList.add("hidden");
+            }
+            document.getElementById("displayStudentInfo").textContent = `Student: ${studentName} | Class 10 CBSE Board`;
+            document.getElementById("printMeta").textContent = `Student: ${studentName} | Subject: ${subject} ${book ? '(' + book + ')' : ''} | Chapter: ${chapter}`;
+
+            currentActiveContent = getChapterContent(subject, book, chapter);
+
+            document.getElementById("summaryBody").innerHTML = currentActiveContent.summary;
+            renderSolutions(currentActiveContent.solutions);
+            renderQuiz(currentActiveContent.quiz);
+
+            document.getElementById("selectionSection").classList.add("hidden");
+            document.getElementById("contentSection").classList.remove("hidden");
+
+            switchTab('summary');
+        }
+
+        function getChapterContent(subject, book, chapter) {
+            if (chapter === "Real Numbers") {
+                return {
+                    summary: `
+                        <p><strong>1. Fundamental Theorem of Arithmetic:</strong> Every composite number can be expressed (factorised) as a product of primes, and this factorisation is unique, apart from the order in which the prime factors occur.</p>
+                        <p><strong>2. HCF and LCM Relation:</strong> For any two positive integers $a$ and $b$, $\\text{HCF}(a, b) \\times \\text{LCM}(a, b) = a \\times b$.</p>
+                        <p><strong>3. Irrational Proofs:</strong> If $p$ is a prime number and $p$ divides $a^2$, then $p$ divides $a$, where $a$ is a positive integer. Used extensively to prove irrationality of $\\sqrt{2}, \\sqrt{3}, \\sqrt{5}$.</p>
+                    `,
+                    solutions: [
+                        { q: "Q1. Express 140 as a product of its prime factors.", a: "To express 140 as prime factors:<br>140 = 2 × 70 = 2 × 2 × 35 = 2 × 2 × 5 × 7 = <strong>2² × 5 × 7</strong>." },
+                        { q: "Q2. Find the HCF and LCM of 26 and 91 and verify that LCM × HCF = product of the two numbers.", a: "26 = 2 × 13<br>91 = 7 × 13<br>HCF = 13<br>LCM = 2 × 7 × 13 = 182.<br>Verification: HCF × LCM = 13 × 182 = 2366.<br>Product of numbers = 26 × 91 = 2366. Hence verified!" },
+                        { q: "Q3. Prove that √5 is irrational.", a: "Let us assume to the contrary that √5 is rational, i.e., √5 = a/b where a and b are coprime integers and b ≠ 0.<br>Squaring both sides: 5 = a²/b² ⇒ 5b² = a².<br>Therefore, 5 divides a², which implies 5 divides a.<br>Let a = 5c. Substituting: 5b² = (5c)² = 25c² ⇒ b² = 5c².<br>This means 5 divides b² and thus 5 divides b.<br>Hence 5 is a common factor of both a and b, contradicting our assumption that a and b are coprime. Thus, √5 is irrational." }
+                    ],
+                    quiz: [
+                        { q: "What is the HCF of two consecutive even numbers?", options: ["1", "2", "0", "4"], correct: 1 },
+                        { q: "If two positive integers a and b are written as a = x³y² and b = xy³, where x, y are prime numbers, then HCF(a, b) is:", options: ["xy", "xy²", "x³y³", "x²y²"], correct: 1 }
+                    ]
+                };
+            }
+
+            if (chapter === "Chemical Reactions and Equations") {
+                return {
+                    summary: `
+                        <p><strong>1. Chemical Reaction:</strong> A process in which one or more substances (reactants) react to form new substances (products) with completely different properties.</p>
+                        <p><strong>2. Balancing Chemical Equations:</strong> Based on the <em>Law of Conservation of Mass</em> (mass can neither be created nor destroyed in a chemical reaction).</p>
+                        <p><strong>3. Types of Reactions:</strong> Combination, Decomposition, Displacement, Double Displacement, Oxidation and Reduction (Redox).</p>
+                    `,
+                    solutions: [
+                        { q: "Q1. Why should a magnesium ribbon be cleaned before burning in air?", a: "Magnesium ribbon is cleaned with sandpaper before burning to remove the protective layer of basic magnesium carbonate formed on its surface by reaction with moist air." },
+                        { q: "Q2. Why is respiration considered an exothermic reaction?", a: "Respiration involves the breakdown of glucose in cells using oxygen to release energy: C₆H₁₂O₆ + 6O₂ → 6CO₂ + 6H₂O + Energy. Since energy is released, it is exothermic." },
+                        { q: "Q3. What is the difference between displacement and double displacement reactions?", a: "In a <strong>displacement reaction</strong>, a more reactive element displaces a less reactive element from its solution (e.g., Fe + CuSO₄ → FeSO₄ + Cu). In a <strong>double displacement reaction</strong>, two compounds exchange ions to form two new compounds (e.g., Na₂SO₄ + BaCl₂ → BaSO₄ + 2NaCl)." }
+                    ],
+                    quiz: [
+                        { q: "Which of the following is a displacement reaction?", options: ["MgCO₃ → MgO + CO₂", "2Na + 2H₂O → 2NaOH + H₂", "2H₂ + O₂ → 2H₂O", "Pb(NO₃)₂ + 2KI → PbI₂ + 2KNO₃"], correct: 1 },
+                        { q: "The rust on iron is chemically known as:", options: ["Hydrated Ferrous Oxide", "Hydrated Ferric Oxide", "Ferric Hydroxide", "Iron Carbonate"], correct: 1 }
+                    ]
+                };
+            }
+
+            // Fallback for all other NCERT chapters
+            return {
+                summary: `
+                    <p><strong>Overview of ${chapter}:</strong> Essential study chapter for CBSE Class 10 ${subject} (${book || subject}).</p>
+                    <p><strong>Key Exam Objectives:</strong></p>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li>Master core definitions and key terminology required by CBSE marking schemes.</li>
+                        <li>Practice exercise questions and step-by-step NCERT problem solutions.</li>
+                        <li>Review important diagrams, formulas, and previous year board questions.</li>
+                    </ul>
+                `,
+                solutions: [
+                    { 
+                        q: `Q1. What is the central topic covered in '${chapter}'?`, 
+                        a: `The chapter '${chapter}' develops fundamental knowledge in ${subject}. CBSE examinations frequently evaluate theoretical concepts, step-by-step reasoning, and formula applications from this chapter.` 
+                    },
+                    { 
+                        q: `Q2. How should Omviraj prepare '${chapter}' for board exams?`, 
+                        a: `1. Read the NCERT textbook thoroughly.<br>2. Memorise key formulas and definitions.<br>3. Solve all sample and past board paper questions.` 
+                    }
+                ],
+                quiz: [
+                    { q: `Which subject section does '${chapter}' belong to?`, options: [subject, "Grammar", "Practical Skills", "Extra Reference"], correct: 0 },
+                    { q: "What is the key to scoring 100% in CBSE NCERT answers?", options: ["Write precise points using exact NCERT keywords", "Write long essays", "Skip formulas", "Guess answers"], correct: 0 }
+                ]
+            };
+        }
+
+        // Dropdown Handlers
+        function onSubjectChange() {
+            const subject = document.getElementById("subjectSelect").value;
+            const bookContainer = document.getElementById("bookContainer");
+            const bookSelect = document.getElementById("bookSelect");
+            const chapterSelect = document.getElementById("chapterSelect");
+
+            bookSelect.innerHTML = '<option value="" disabled selected>-- Choose Book / Section --</option>';
+            chapterSelect.innerHTML = '<option value="" disabled selected>-- Select Book First --</option>';
+            chapterSelect.disabled = true;
+
+            const subjectData = ncertDatabase[subject];
+
+            if (subjectData && subjectData.books) {
+                bookContainer.classList.remove("hidden");
+                bookSelect.required = true;
+
+                Object.keys(subjectData.books).forEach(bookName => {
+                    const option = document.createElement("option");
+                    option.value = bookName;
+                    option.textContent = bookName;
+                    bookSelect.appendChild(option);
+                });
+            } else if (subjectData && subjectData.chapters) {
+                bookContainer.classList.add("hidden");
+                bookSelect.required = false;
+
+                chapterSelect.innerHTML = '<option value="" disabled selected>-- Choose Chapter --</option>';
+                subjectData.chapters.forEach(chap => {
+                    const option = document.createElement("option");
+                    option.value = chap;
+                    option.textContent = chap;
+                    chapterSelect.appendChild(option);
+                });
+                chapterSelect.disabled = false;
+            }
+        }
+
+        function onBookChange() {
+            const subject = document.getElementById("subjectSelect").value;
+            const book = document.getElementById("bookSelect").value;
+            const chapterSelect = document.getElementById("chapterSelect");
+
+            chapterSelect.innerHTML = '<option value="" disabled selected>-- Choose Chapter --</option>';
+
+            if (subject && book && ncertDatabase[subject].books[book]) {
+                const chapters = ncertDatabase[subject].books[book];
+                chapters.forEach(chap => {
+                    const option = document.createElement("option");
+                    option.value = chap;
+                    option.textContent = chap;
+                    chapterSelect.appendChild(option);
+                });
+                chapterSelect.disabled = false;
+            }
+        }
+
+        let currentActiveContent = null;
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            const subject = document.getElementById("subjectSelect").value;
+            const bookContainer = document.getElementById("bookContainer");
+            const book = bookContainer.classList.contains("hidden") ? "" : document.getElementById("bookSelect").value;
+            const chapter = document.getElementById("chapterSelect").value;
+
+            if (!subject || !chapter) return;
+
+            openChapterDirectly(subject, book, chapter);
+        }
+
+        function renderSolutions(solutions) {
+            const container = document.getElementById("solutionsList");
+            container.innerHTML = "";
+
+            solutions.forEach((item, index) => {
+                const card = document.createElement("div");
+                card.className = "solution-item bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-5 shadow-sm transition hover:shadow-md";
+                card.innerHTML = `
+                    <div class="font-bold text-slate-900 dark:text-white mb-2 text-base sm:text-lg flex items-start space-x-2">
+                        <span class="text-cbse-600 dark:text-indigo-400 font-extrabold text-sm sm:text-base">[Q${index+1}]</span>
+                        <span>${item.q.replace(/^Q\d+[:.]\s*/, '')}</span>
+                    </div>
+                    <div class="mt-3 text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed bg-slate-50 dark:bg-slate-900/60 p-4 rounded-xl border-l-4 border-emerald-500">
+                        <strong class="text-emerald-700 dark:text-emerald-400 block mb-1 text-xs uppercase tracking-wider">NCERT Solution:</strong>
+                        <div>${item.a}</div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function renderQuiz(quiz) {
+            const container = document.getElementById("quizContainer");
+            container.innerHTML = "";
+            document.getElementById("quizScoreBadge").classList.add("hidden");
+
+            quiz.forEach((qItem, qIdx) => {
+                const qDiv = document.createElement("div");
+                qDiv.className = "bg-slate-50 dark:bg-slate-900/50 p-4 sm:p-5 rounded-xl border border-slate-200 dark:border-slate-700";
+                
+                let optionsHtml = "";
+                qItem.options.forEach((opt, optIdx) => {
+                    optionsHtml += `
+                        <label class="flex items-center space-x-3 p-3 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-700 transition">
+                            <input type="radio" name="quiz_q_${qIdx}" value="${optIdx}" class="text-cbse-600 focus:ring-cbse-500">
+                            <span class="text-slate-700 dark:text-slate-200 text-sm">${opt}</span>
+                        </label>
+                    `;
+                });
+
+                qDiv.innerHTML = `
+                    <p class="font-semibold text-slate-900 dark:text-white mb-3 text-sm sm:text-base">${qIdx + 1}. ${qItem.q}</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        ${optionsHtml}
+                    </div>
+                `;
+                container.appendChild(qDiv);
+            });
+        }
+
+        function checkQuizAnswers() {
+            if (!currentActiveContent || !currentActiveContent.quiz) return;
+
+            let score = 0;
+            const quiz = currentActiveContent.quiz;
+
+            quiz.forEach((qItem, qIdx) => {
+                const selected = document.querySelector(`input[name="quiz_q_${qIdx}"]:checked`);
+                if (selected && parseInt(selected.value) === qItem.correct) {
+                    score++;
+                }
+            });
+
+            const scoreBadge = document.getElementById("quizScoreBadge");
+            scoreBadge.textContent = `Score: ${score} / ${quiz.length}`;
+            scoreBadge.classList.remove("hidden");
+        }
+
+        function filterSolutions() {
+            const query = document.getElementById("solutionSearchInput").value.toLowerCase();
+            const items = document.querySelectorAll(".solution-item");
+
+            items.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                item.style.display = text.includes(query) ? "block" : "none";
+            });
+        }
+
+        function switchTab(tab) {
+            const tabs = ['summary', 'solutions', 'quiz'];
+            tabs.forEach(t => {
+                const btn = document.getElementById(`tabBtn${t.charAt(0).toUpperCase() + t.slice(1)}`);
+                const content = document.getElementById(`tabContent${t.charAt(0).toUpperCase() + t.slice(1)}`);
+
+                if (t === tab) {
+                    btn.classList.add("border-cbse-600", "text-cbse-600", "dark:text-indigo-400");
+                    btn.classList.remove("border-transparent", "text-slate-500", "dark:text-slate-400");
+                    content.classList.remove("hidden");
+                } else {
+                    btn.classList.remove("border-cbse-600", "text-cbse-600", "dark:text-indigo-400");
+                    btn.classList.add("border-transparent", "text-slate-500", "dark:text-slate-400");
+                    content.classList.add("hidden");
+                }
+            });
+        }
+
+        function resetToHome() {
+            document.getElementById("contentSection").classList.add("hidden");
+            document.getElementById("selectionSection").classList.remove("hidden");
+        }
+
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+        }
+    </script>
+</body>
+</html>
